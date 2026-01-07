@@ -1,4 +1,4 @@
-# 🚀 TalentFlow - Sistema de Gestión de Personal
+# 🚀 Sistema de Gestión de Personal/Empleados
 
 **TalentFlow** es una aplicación web robusta desarrollada en **Java Jakarta EE** bajo el patrón de arquitectura **MVC (Model-View-Controller)**. El sistema permite la gestión integral de empleados con una experiencia de usuario fluida y un despliegue moderno basado en contenedores.
 

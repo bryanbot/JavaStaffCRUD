@@ -35,6 +35,9 @@ public class EmpleadoControlador extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		
 		String accion = request.getParameter("accion");
 		if(accion == null) accion = "listar";
 		
@@ -125,14 +128,17 @@ public class EmpleadoControlador extends HttpServlet {
 		if("json".equals(formato)) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
+			String jsonOutput = convertirAJsonManual(lista);
+			
+			System.out.println("DEBUG JSON: " + jsonOutput);
+			
 			try (PrintWriter out = response.getWriter()){
-				out.print(convertirAJsonManual(lista));
+				out.print(jsonOutput);
 				out.flush();
 			}
 		}else {
 			request.setAttribute("empleados", lista);
 			request.getRequestDispatcher(pagListar).forward(request, response);
-			System.out.println("Listar todos: " + lista);
 		}
 	}
 	
@@ -154,11 +160,14 @@ public class EmpleadoControlador extends HttpServlet {
 		StringBuilder sb = new StringBuilder("[");
 		for (int i = 0; i < lista.size(); i++) {
 			Empleado e = lista.get(i);
-			sb.append(String.format(
-					"{\"id\":%d, \"nombre\":\"%s\", \"apellido\":\"%s\", \"fechaIngreso\":\"%s\", \"sueldo\":%.2f}", 
-					e.getId(), e.getNombre(), e.getApellido(), e.getFechaIngreso(), e.getSueldo()
-			));
-			if(i < lista.size() - 1) sb.append(",");
+			sb.append("{");
+	        sb.append("\"id\":").append(e.getId()).append(",");
+	        sb.append("\"nombre\":\"").append(e.getNombre()).append("\",");
+	        sb.append("\"apellido\":\"").append(e.getApellido()).append("\",");
+	        sb.append("\"fechaIngreso\":\"").append(e.getFechaIngreso()).append("\",");
+	        sb.append("\"sueldo\":").append(e.getSueldo());
+	        sb.append("}");
+	        if (i < lista.size() - 1) sb.append(",");
 		}
 		sb.append("]");
 		return sb.toString();

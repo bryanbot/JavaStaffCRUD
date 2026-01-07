@@ -45,7 +45,6 @@
 			</div>
 			
 			<div class="col-auto">
-				<button type="submit" class="btn btn-primary">Buscar</button>
 				<a href="EmpleadoControlador?accion=listar" class="btn btn-outline-secondary">Limpiar</a>
 			</div>
 		</form>
@@ -134,57 +133,6 @@
 		});
 	</script>
 	
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-	    const inputBuscar = document.getElementById("txtBuscar");
-	    const tablaBody = document.getElementById("tablaEmpleados");
-	    let timeout = null;
-	
-	    inputBuscar.addEventListener("input", () => {
-	        // Limpiar el temporizador previo (Debounce)
-	        clearTimeout(timeout);
-	
-	        timeout = setTimeout(() => {
-	            const valor = inputBuscar.value;
-	            
-	            // Llamada asíncrona al Servlet pidiendo formato JSON
-	            fetch(`EmpleadoControlador?accion=listar&format=json&txtBuscar=` + encodeURIComponent(valor))
-	                .then(response => {
-	                    if (!response.ok) throw new Error('Error en la red');
-	                    return response.json();
-	                })
-	                .then(data => {
-	                    actualizarTabla(data);
-	                })
-	                .catch(error => console.error("Error:", error));
-	        }, 300); // Espera 300ms después de que el usuario deja de escribir
-	    });
-	
-	    function actualizarTabla(empleados) {
-	        tablaBody.innerHTML = ""; // Limpiar tabla actual
-	
-	        if (empleados.length === 0) {
-	            tablaBody.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron resultados</td></tr>';
-	            return;
-	        }
-	
-	        empleados.forEach(emp => {
-	            const fila = `
-	                <tr>
-	                    <td>${emp.id}</td>
-	                    <td>${emp.nombre}</td>
-	                    <td>${emp.apellido}</td>
-	                    <td>${emp.fechaIngreso}</td>
-	                    <td>${emp.sueldo.toFixed(2)}</td>
-	                    <td>
-	                        <a href="EmpleadoControlador?accion=editar&id=${emp.id}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-	                        <a href="EmpleadoControlador?accion=eliminar&id=${emp.id}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar?')"><i class="fa fa-trash"></i></a>
-	                    </td>
-	                </tr>`;
-	            tablaBody.innerHTML += fila;
-	        });
-	    }
-	});
-	</script>
+	<script src="${pageContext.request.contextPath}/js/buscador.js"></script>
 </body>
 </html>

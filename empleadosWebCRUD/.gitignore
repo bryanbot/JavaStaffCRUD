@@ -1,1 +1,14 @@
-/target/
+target/
+*.war
+*.ear
+*.jar
+
+# Eclipse - Archivos de configuración local
+.settings/
+.classpath
+.project
+.factorypath
+
+# Sistema Operativo
+DS_Store
+Thumbs.db
